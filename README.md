@@ -12,3 +12,6 @@ Curso: K3151
 | Integrantes        | Legajo    |
 | ------------------ | --------- |
 | Suarez, Tomás | 164.373-3 |
+| Isusi, Mateo | 213.206-0 |
+| Duin, Angel | 172.486-1 |
+| Paris, Santiago | xxx.xxx-x |
