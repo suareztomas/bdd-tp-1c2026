@@ -1,0 +1,231 @@
+@startuml
+!theme plain
+
+skinparam linetype ortho
+
+
+entity Venta {
+vent_nro_venta: bigint
+vent_agencia: bigint,FK
+--
+vent_propuesta: bigint,FK
+vent_cliente: nvarchar(255),FK
+vent_agente: bigint,FK
+vent_fecha: date
+vent_canal: nvarchar(255)
+vent_medio_pago: nvarchar(255)
+vent_subtotal: decimal(8,12)
+vent_descuento: decimal(8,12)
+vent_total: decimal(8,12)
+}
+
+entity Vuelo {
+vuel_id_vuelo: bigint
+--
+vuel_nro_vuelo: nvarchar(20)
+vuel_aeropuerto_salida: nvarchar(100)
+vuel_aeropuerto_llegada: nvarchar(100)
+vuel_fecha_salida: datetime
+vuel_fecha_llegada: datetime
+vuel_aerolinea: nvarchar(100)
+}
+
+entity Hospedaje {
+hosp_id: bigint
+--
+hosp_nombre: nvarchar(100)
+hosp_direccion: nvarchar(255)
+hosp_check_in: time
+hosp_check_out: time
+}
+
+entity Habitacion {
+habi_id: bigint
+--
+habi_id_hospedaje: bigint,FK
+habi_tipo: nvarchar(50)
+habi_precio: decimal(18,2)
+}
+
+entity Excursion {
+excu_id: bigint
+--
+excu_nombre: nvarchar(100)
+excu_horario: time
+excu_duracion: int
+excu_proveedor: nvarchar(100)
+}
+
+entity Venta_Vuelo {
+vent_vuel_id: bigint
+vent_vuel_nro_venta: bigint,FK
+vent_vuel_id_vuelo: bigint,FK
+--
+vent_vuel_cantidad_pasajes: int
+vent_vuel_precio_unitario: decimal(18,2)
+vent_vuel_subtotal: decimal(18,2)
+vent_vuel_cod_reserva: nvarchar(50)
+}
+
+entity Venta_Hospedaje{
+vent_hosp_id: bigint
+vent_hosp_nro_venta: bigint,FK
+vent_hosp_id_habitacion: bigint,FK
+--
+vent_hosp_fecha_desde: date
+vent_hosp_fecha_hasta: date
+vent_hosp_cantidad: int
+vent_hosp_precio_unitario: decimal(18,2)
+vent_hosp_subtotal: decimal(18,2)
+vent_hosp_cod_reserva: nvarchar(50)
+}
+
+
+entity Venta_Excursion {
+vent_excu_id: bigint
+vent_excu_nro_venta: bigint,FK
+vent_excu_id_excursion: bigint,FK
+--
+vent_excu_fecha: date
+vent_excu_cantidad: int
+vent_excu_precio_unitario: decimal(18,2)
+vent_excu_subtotal: decimal(18,2)
+vent_excu_cod_reserva: nvarchar(50)
+}
+
+
+entity Cliente {
+clie_dni: nvarchar(20)
+---
+clie_nombre: nvarchar(100)
+clie_apellido: nvarchar(100)
+clie_fecha_nac: date
+clie_tel: nvarchar(255)
+clie_mail: nvarchar(255)
+clie_direccion: nvarchar(255)
+clie_provincia: nvarchar(255)
+clie_localidad: nvarchar(255)
+}
+
+entity Agencia {
+agcia_nro_agencia: bigint
+--
+agcia_tel: nvarchar(255)
+agcia_mail: nvarchar(255)
+agcia_direccion: nvarchar(255)
+agcia_provincia: nvarchar(255)
+agcia_localidad: nvarchar(255)
+}
+
+entity Agente {
+agte_legajo: bigint
+--
+agte_agencia: bigint,FK
+agte_nombre: nvarchar(100)
+agte_apellido: nvarchar(100)
+agte_dni: nvarchar(20)
+agte_fecha_nac: date
+agte_tel: nvarchar(255)
+agte_mail: nvarchar(255)
+agte_direccion: nvarchar(255)
+agte_provincia: nvarchar(255)
+agte_localidad: nvarchar(255)
+}
+
+entity Solicitud_Cotizacion {
+soli_nro_solicitud: bigint
+--
+soli_cliente: nvarchar(255),FK
+soli_fecha: date
+soli_fecha_inicio: date
+soli_fecha_fin: date
+soli_cantidad: int
+soli_observaciones: nvarchar(255)
+soli_presupuesto: decimal(18,2)
+soli_agente: bigint,FK
+}
+
+entity Ciudad {
+ciud_solicitud: bigint,FK
+ciud_ciudad: nvarchar(255)
+ciud_dias: int
+ciud_observaciones: nvarchar(255)
+}
+
+entity Propuesta {
+prop_nro_propuesta: bigint
+--
+prop_nro_solicitud: bigint,FK
+prop_agente: bigint,FK
+prop_fecha: date
+prop_vigencia: date
+prop_fecha_desde: date
+prop_fecha_hasta: date
+prop_subtotal: decimal(18,2)
+prop_descuento: decimal(18,2)
+prop_total: decimal(18,2)
+prop_estado: nvarchar(255)
+}
+
+entity Propuesta_Vuelo {
+prop_vuel_nro_propuesta: bigint,FK
+prop_vuel_id_vuelo: bigint,FK
+--
+prop_vuel_cantidad_pasajes: int
+prop_vuel_precio_unitario: decimal(18,2)
+prop_vuel_subtotal: decimal(18,2)
+}
+
+entity Propuesta_Hospedaje {
+prop_vuel_nro_propuesta: bigint,FK
+prop_vuel_id_habitacion: bigint,FK
+--
+prop_hosp_fecha_desde: date
+prop_hosp_fecha_hasta: date
+prop_vuel_cantidad: int
+prop_vuel_precio: decimal(18,2)
+prop_vuel_subtotal: decimal(18,2)
+}
+
+entity Encuesta {
+encu_nro_encuesta: bigint
+--
+encu_cliente: bigint,FK
+encu_agente: biging,FK
+encu_fecha: date
+encu_comentario: nvarchar(255)
+}
+
+entity Aspecto_Encuesta {
+asp_encu_nro_encuesta: bigint,FK
+---
+asp_aspecto: nvarchar(255)
+asp_puntaje: int
+}
+
+Cliente ||--o{ Venta
+Agencia ||--o{ Venta
+Agente  ||--o{ Venta
+Agencia ||--o{ Agente
+Venta ||--o{ Venta_Hospedaje
+Venta ||--o{ Venta_Excursion
+Venta ||--o{ Venta_Vuelo
+Vuelo ||--o{ Venta_Vuelo
+Habitacion||--o{ Venta_Hospedaje
+Excursion ||--o{ Venta_Excursion
+Hospedaje ||--o{ Habitacion
+Solicitud_Cotizacion ||--o{ Ciudad
+Agente ||--o{ Solicitud_Cotizacion
+Cliente ||--o{ Solicitud_Cotizacion
+Solicitud_Cotizacion ||--|| Propuesta
+Agente ||--o{ Propuesta
+Cliente ||--o{ Propuesta
+Propuesta ||--o{ Propuesta_Vuelo
+Propuesta ||--o{ Propuesta_Hospedaje
+Vuelo ||--o{ Propuesta_Vuelo
+Habitacion ||--o{ Propuesta_Hospedaje
+Venta |o--o| Propuesta
+Agente ||--o{ Encuesta
+Cliente ||--o{ Encuesta
+Encuesta ||-down-o{ Aspecto_Encuesta
+@enduml
